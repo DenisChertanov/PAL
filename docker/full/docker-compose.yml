@@ -56,6 +56,8 @@ services:
     environment:
       MINIO_ACCESS_KEY: minio_access_key
       MINIO_SECRET_KEY: minio_secret_key
+      MINIO_ROOT_USER: minio_user
+      MINIO_ROOT_PASSWORD: minio_password
     entrypoint: sh
     command: -c 'mkdir -p /data/images-bucket && minio server /data --console-address ":9001"'
   zookeeper:

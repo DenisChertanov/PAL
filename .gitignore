@@ -9,7 +9,7 @@
 *.war
 
 # Idea
-*/.idea/*
+*/.idea
 
 # Maven
 */target/*

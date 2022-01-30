@@ -5,20 +5,15 @@
 
     <parent>
         <groupId>dachertanov.pal</groupId>
-        <artifactId>pal-back</artifactId>
+        <artifactId>pal-dto</artifactId>
         <version>${revision}</version>
     </parent>
 
-    <artifactId>pal-recommendation-service</artifactId>
-    <name>pal-recommendation-service</name>
+    <artifactId>pal-recommendation-dto</artifactId>
+    <name>pal-recommendation-dto</name>
     <version>${revision}</version>
 
     <dependencies>
-        <dependency>
-            <groupId>dachertanov.pal</groupId>
-            <artifactId>pal-recommendation-dto</artifactId>
-            <version>${revision}</version>
-        </dependency>
     </dependencies>
 
     <build>

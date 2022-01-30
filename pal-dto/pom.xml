@@ -9,17 +9,15 @@
         <version>${revision}</version>
     </parent>
 
-    <artifactId>pal-recommendation-service</artifactId>
-    <name>pal-recommendation-service</name>
+    <artifactId>pal-dto</artifactId>
+    <name>pal-dto</name>
     <version>${revision}</version>
+    <packaging>pom</packaging>
 
-    <dependencies>
-        <dependency>
-            <groupId>dachertanov.pal</groupId>
-            <artifactId>pal-recommendation-dto</artifactId>
-            <version>${revision}</version>
-        </dependency>
-    </dependencies>
+    <modules>
+        <module>pal-backend-dto</module>
+        <module>pal-recommendation-dto</module>
+    </modules>
 
     <build>
         <plugins>

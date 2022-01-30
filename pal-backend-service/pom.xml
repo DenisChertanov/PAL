@@ -18,6 +18,12 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
+
+        <dependency>
+            <groupId>dachertanov.pal</groupId>
+            <artifactId>pal-backend-dto</artifactId>
+            <version>${revision}</version>
+        </dependency>
     </dependencies>
 
     <build>

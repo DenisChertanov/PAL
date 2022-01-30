@@ -9,13 +9,15 @@
 *.war
 
 # Idea
-.idea
+**/.idea/**
+*.iml
 
 # Maven
-*/target/*
+**/target/**
+**/.mvn/**
 
 # Gradle
-*/gradle/*
+**/gradle/**
 
 # Mac OS
 **/.DS_Store

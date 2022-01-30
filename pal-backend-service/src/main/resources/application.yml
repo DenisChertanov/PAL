@@ -1,0 +1,6 @@
+spring:
+  main:
+    allow-circular-references: true # Убрать когда springdoc-openapi-ui выкатят версию без бага
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher # Для сваггера

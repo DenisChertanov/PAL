@@ -18,6 +18,7 @@
 
     <modules>
         <module>pal-backend-service</module>
+        <module>pal-recommendation-service</module>
     </modules>
 
     <properties>

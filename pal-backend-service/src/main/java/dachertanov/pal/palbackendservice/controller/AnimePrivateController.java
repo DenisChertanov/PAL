@@ -2,7 +2,7 @@ package dachertanov.pal.palbackendservice.controller;
 
 import dachertanov.pal.palbackenddto.anime.AnimeInDto;
 import dachertanov.pal.palbackenddto.anime.AnimeOutDto;
-import dachertanov.pal.palbackendservice.service.AnimeCRUDService;
+import dachertanov.pal.palbackendservice.service.AnimePrivateService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -15,12 +15,12 @@ import java.util.UUID;
 @RestController
 @RequestMapping("/api/private/anime")
 @AllArgsConstructor
-public class AnimeCRUDController {
-    private final AnimeCRUDService animeCRUDService;
+public class AnimePrivateController {
+    private final AnimePrivateService animePrivateService;
 
     @PostMapping(value = "/add")
     public ResponseEntity<AnimeOutDto> addAnime(@RequestBody AnimeInDto animeInDto) {
-        return animeCRUDService.addAnime(animeInDto)
+        return animePrivateService.addAnime(animeInDto)
                 .map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
@@ -28,6 +28,6 @@ public class AnimeCRUDController {
     @PostMapping(value = "/upload-image", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
     public String uploadAnimeImage(@RequestPart @NotNull MultipartFile file,
                                    @RequestPart @NotNull String animeId) throws Exception {
-        return animeCRUDService.uploadAnimeImage(file, UUID.fromString(animeId));
+        return animePrivateService.uploadAnimeImage(file, UUID.fromString(animeId));
     }
 }

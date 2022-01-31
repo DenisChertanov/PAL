@@ -25,7 +25,7 @@ import java.util.UUID;
 
 @Service
 @AllArgsConstructor
-public class AnimeCRUDService {
+public class AnimePrivateService {
     private AnimeStateRepository animeStateRepository;
     private AnimeTagRepository animeTagRepository;
     private AnimeTypeRepository animeTypeRepository;

@@ -18,3 +18,14 @@ s3:
   bucket: images-bucket
   access-key: ${MINIO_ACCESS_KEY:minio_access_key}
   secret-key: ${MINIO_SECRET_KEY:minio_secret_key}
+
+pal:
+  security:
+    jwt:
+      secret: ${JWT_SECRET:'123456'}
+      expiration: ${JWT_EXPIRATION:1d}
+    pbkdf:
+      secret-key: ${PBKDF_SECRET_KEY:secret_key}
+      iterations: ${PBKDF_ITERATIONS:200000}
+      hash-width: ${PBKDF_HASH_WIDTH:256}
+    admin-id: 6dc03ba7-f6f2-4071-ae50-61b36cf30f10

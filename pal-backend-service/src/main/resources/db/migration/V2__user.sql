@@ -1,4 +1,4 @@
-create table if not exists "user"
+create table if not exists user_info
 (
       user_id       uuid        default uuid_generate_v4()   primary key,
       username      varchar     not null,

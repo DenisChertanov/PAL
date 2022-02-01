@@ -10,6 +10,7 @@ import dachertanov.pal.palbackendservice.mapper.UserAnimeActivityMapper;
 import dachertanov.pal.palbackendservice.repository.AnimeRepository;
 import dachertanov.pal.palbackendservice.repository.UserAnimeActivityRepository;
 import dachertanov.pal.palbackendservice.repository.UserStatisticRepository;
+import dachertanov.pal.palbackendservice.security.config.SecurityUtil;
 import dachertanov.pal.palbackendservice.security.config.UserDetailsImpl;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -65,7 +66,7 @@ public class UserAnimeActivityService {
      * Обновляет последний просмотренный по аниме эпизод + обновляет статистику пользователя
      */
     private void setLastWatchedEpisode(UUID animeId, Integer lastWatchedEpisode) {
-        UUID userId = getCurrentUserId();
+        UUID userId = SecurityUtil.getCurrentUserId();
 
         Anime anime = animeRepository.getById(animeId);
         if (lastWatchedEpisode > anime.getEpisodes()) {
@@ -83,14 +84,9 @@ public class UserAnimeActivityService {
     }
 
     private UserAnimeActivity getOrCreate(UUID animeId) {
-        UUID userId = getCurrentUserId();
+        UUID userId = SecurityUtil.getCurrentUserId();
         return userAnimeActivityRepository.findById(new UserAnimeActivityId(userId, animeId))
                 .orElseGet(() -> userAnimeActivityMapper.emptyEntity(userId, animeId));
-    }
-
-    private UUID getCurrentUserId() {
-        UserDetailsImpl userDetails = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        return UUID.fromString(userDetails.getUserId());
     }
 
     private void validateAnimeId(UUID animeId) {

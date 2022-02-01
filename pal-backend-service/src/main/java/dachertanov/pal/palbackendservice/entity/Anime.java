@@ -25,7 +25,7 @@ public class Anime {
     @NotNull
     @Min(0)
     @Max(10)
-    private Double mark;
+    private Double mark = 0.0;
 
     @NotNull
     private Integer year;
@@ -38,9 +38,13 @@ public class Anime {
 
     @NotNull
     @Min(0)
-    private Integer episodes;
+    private Integer episodes = 0;
 
     private String description;
+
+    @NotNull
+    @Min(0)
+    private Double duration = 0.0;
 
     @NotNull
     @OneToOne(cascade = CascadeType.ALL)

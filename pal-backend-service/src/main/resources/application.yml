@@ -23,7 +23,7 @@ pal:
   security:
     jwt:
       secret: ${JWT_SECRET:'123456'}
-      expiration: ${JWT_EXPIRATION:1d}
+      expiration: ${JWT_EXPIRATION:10d}
     pbkdf:
       secret-key: ${PBKDF_SECRET_KEY:secret_key}
       iterations: ${PBKDF_ITERATIONS:200000}

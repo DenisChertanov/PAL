@@ -22,7 +22,7 @@ public class AnimeInDto {
     @NotNull
     @Min(0)
     @Max(10)
-    private Double mark;
+    private Double mark = 0.0;
 
     @Schema(description = "Статус аниме", example = "Вышел")
     @NotNull
@@ -47,10 +47,15 @@ public class AnimeInDto {
     @Schema(description = "Количество эпизодов", example = "12", minimum = "0")
     @NotNull
     @Min(0)
-    private Integer episodes;
+    private Integer episodes = 0;
 
     @Schema(description = "Краткое описание", example = "Сюжет разворачивается...")
     private String description;
+
+    @Schema(description = "Продолжительность аниме в часах", example = "4.3", minimum = "0")
+    @NotNull
+    @Min(0)
+    private Double duration = 0.0;
 
     @Schema(description = "Список аниме тэгов", example = "[\"Драма\", \"Романтика\"]")
     @NotNull

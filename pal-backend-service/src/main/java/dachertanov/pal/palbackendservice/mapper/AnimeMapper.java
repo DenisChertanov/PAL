@@ -9,6 +9,7 @@ import dachertanov.pal.palbackendservice.entity.AnimeType;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
 public class AnimeMapper {
@@ -21,6 +22,7 @@ public class AnimeMapper {
         anime.setDirector(animeInDto.getDirector());
         anime.setEpisodes(animeInDto.getEpisodes());
         anime.setDescription(animeInDto.getDescription());
+        anime.setDuration(animeInDto.getDuration());
         anime.setAnimeState(animeState);
         anime.setAnimeType(animeType);
         anime.setAnimeTags(animeTags);
@@ -31,6 +33,17 @@ public class AnimeMapper {
     public AnimeOutDto entityToOut(Anime anime) {
         AnimeOutDto animeOutDto = new AnimeOutDto();
         animeOutDto.setAnimeId(anime.getAnimeId());
+        animeOutDto.setTitle(anime.getTitle());
+        animeOutDto.setMark(anime.getMark());
+        animeOutDto.setYear(anime.getYear());
+        animeOutDto.setStudio(anime.getStudio());
+        animeOutDto.setDirector(anime.getDirector());
+        animeOutDto.setEpisodes(anime.getEpisodes());
+        animeOutDto.setDescription(anime.getDescription());
+        animeOutDto.setDuration(anime.getDuration());
+        animeOutDto.setStateTitle(anime.getAnimeState().getState());
+        animeOutDto.setTypeTitle(anime.getAnimeType().getType());
+        animeOutDto.setAnimeTags(anime.getAnimeTags().stream().map(AnimeTag::getTag).collect(Collectors.toList()));
 
         return animeOutDto;
     }

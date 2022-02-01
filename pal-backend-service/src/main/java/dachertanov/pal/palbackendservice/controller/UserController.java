@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/api/private/user")
+@RequestMapping("/api/public/user")
 @AllArgsConstructor
 public class UserController {
     private final UserService userService;

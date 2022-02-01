@@ -41,6 +41,7 @@ public class AnimeMapper {
         animeOutDto.setEpisodes(anime.getEpisodes());
         animeOutDto.setDescription(anime.getDescription());
         animeOutDto.setDuration(anime.getDuration());
+        animeOutDto.setAddedTime(anime.getAddedTime());
         animeOutDto.setStateTitle(anime.getAnimeState().getState());
         animeOutDto.setTypeTitle(anime.getAnimeType().getType());
         animeOutDto.setAnimeTags(anime.getAnimeTags().stream().map(AnimeTag::getTag).collect(Collectors.toList()));

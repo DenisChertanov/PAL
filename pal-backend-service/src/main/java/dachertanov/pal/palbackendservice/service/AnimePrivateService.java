@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -38,6 +39,7 @@ public class AnimePrivateService {
                 getAnimeStateByState(animeInDto.getStateTitle()),
                 getAnimeTypeByType(animeInDto.getTypeTitle()),
                 getAnimeTagsByTags(animeInDto.getAnimeTags()));
+        anime.setAddedTime(LocalDateTime.now());
         anime = animeRepository.save(anime);
 
         return Optional.of(animeMapper.entityToOut(anime));

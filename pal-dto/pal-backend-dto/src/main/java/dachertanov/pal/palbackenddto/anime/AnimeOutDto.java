@@ -8,6 +8,7 @@ import lombok.Data;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -61,6 +62,9 @@ public class AnimeOutDto {
     @NotNull
     @Min(0)
     private Double duration = 0.0;
+
+    @Schema(description = "Дата и время добавление аниме в БД")
+    private LocalDateTime addedTime;
 
     @Schema(description = "Список аниме тэгов", example = "[\"Драма\", \"Романтика\"]")
     @NotNull

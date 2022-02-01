@@ -6,6 +6,7 @@ import javax.persistence.*;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -45,6 +46,9 @@ public class Anime {
     @NotNull
     @Min(0)
     private Double duration = 0.0;
+
+    @NotNull
+    private LocalDateTime addedTime;
 
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY)

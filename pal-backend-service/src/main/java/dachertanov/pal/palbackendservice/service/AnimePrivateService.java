@@ -43,6 +43,31 @@ public class AnimePrivateService {
         return Optional.of(animeMapper.entityToOut(anime));
     }
 
+    public Optional<AnimeOutDto> updateAnime(AnimeInDto animeInDto, UUID animeId) {
+        Optional<Anime> animeOptional = animeRepository.findById(animeId);
+        if (animeOptional.isPresent()) {
+            Anime updatedAnime = animeMapper.inDtoToEntity(animeInDto,
+                    getAnimeStateByState(animeInDto.getStateTitle()),
+                    getAnimeTypeByType(animeInDto.getTypeTitle()),
+                    getAnimeTagsByTags(animeInDto.getAnimeTags()));
+            updatedAnime.setAnimeId(animeId);
+            updatedAnime.setImageUrl(animeOptional.get().getImageUrl());
+            updatedAnime = animeRepository.save(updatedAnime);
+
+            return Optional.of(animeMapper.entityToOut(updatedAnime));
+        } else {
+            throw new HttpClientErrorException(HttpStatus.BAD_REQUEST, "Аниме с id \"" + animeId + "\" не найдено");
+        }
+    }
+
+    public void deleteAnime(UUID animeId) {
+        if (animeRepository.existsById(animeId)) {
+            animeRepository.deleteById(animeId);
+        } else {
+            throw new HttpClientErrorException(HttpStatus.BAD_REQUEST, "Аниме с id \"" + animeId + "\" не найдено");
+        }
+    }
+
     public String uploadAnimeImage(MultipartFile file, UUID animeId) throws Exception {
         Optional<Anime> animeOptional = animeRepository.findById(animeId);
 

@@ -47,12 +47,12 @@ public class Anime {
     private Double duration = 0.0;
 
     @NotNull
-    @OneToOne(cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "anime_state_id", referencedColumnName = "anime_state_id")
     private AnimeState animeState;
 
     @NotNull
-    @OneToOne(cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "anime_type_id", referencedColumnName = "anime_type_id")
     private AnimeType animeType;
 

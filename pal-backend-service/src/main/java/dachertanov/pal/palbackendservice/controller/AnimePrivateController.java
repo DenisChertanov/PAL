@@ -27,6 +27,18 @@ public class AnimePrivateController {
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
+    @PostMapping(value = "/update/{animeId}")
+    public ResponseEntity<AnimeOutDto> updateAnime(@RequestBody AnimeInDto animeInDto, @PathVariable UUID animeId) {
+        return animePrivateService.updateAnime(animeInDto, animeId)
+                .map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
+    @GetMapping(value = "/delete/{animeId}")
+    public void deleteAnime(@PathVariable UUID animeId) {
+        animePrivateService.deleteAnime(animeId);
+    }
+
     @PostMapping(value = "/upload-image", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
     public String uploadAnimeImage(@RequestPart @NotNull MultipartFile file,
                                    @RequestPart @NotNull String animeId) throws Exception {

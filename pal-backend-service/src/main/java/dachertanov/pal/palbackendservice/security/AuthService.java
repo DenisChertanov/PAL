@@ -3,8 +3,10 @@ package dachertanov.pal.palbackendservice.security;
 import dachertanov.pal.palbackenddto.user.UserInfoInDto;
 import dachertanov.pal.palbackenddto.user.UserInfoOutDto;
 import dachertanov.pal.palbackendservice.entity.UserInfo;
+import dachertanov.pal.palbackendservice.entity.UserStatistic;
 import dachertanov.pal.palbackendservice.mapper.UserInfoMapper;
 import dachertanov.pal.palbackendservice.repository.UserInfoRepository;
+import dachertanov.pal.palbackendservice.repository.UserStatisticRepository;
 import dachertanov.pal.palbackendservice.security.config.JwtUtils;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -26,6 +28,7 @@ public class AuthService {
     private final Pbkdf2PasswordEncoder passwordEncoder;
     private final JwtUtils jwtUtils;
     private final UserInfoMapper userInfoMapper;
+    private final UserStatisticRepository userStatisticRepository;
 
     /**
      * Возвращает jwt токен по переданным Basic Auth
@@ -56,6 +59,7 @@ public class AuthService {
     public UserInfoOutDto signUp(UserInfoInDto userInfoInDto) {
         UserInfo userInfo = userInfoMapper.inDtoToEntity(userInfoInDto);
         userInfo = userInfoRepository.save(userInfo);
+        userStatisticRepository.save(new UserStatistic(userInfo.getUserId()));
 
         return userInfoMapper.entityToOutDto(userInfo);
     }

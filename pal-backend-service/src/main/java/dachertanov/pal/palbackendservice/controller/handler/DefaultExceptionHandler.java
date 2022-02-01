@@ -1,5 +1,6 @@
 package dachertanov.pal.palbackendservice.controller.handler;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.annotation.AnnotatedElementUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -9,9 +10,12 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.client.HttpClientErrorException;
 
 @ControllerAdvice
+@Slf4j
 public class DefaultExceptionHandler {
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorResponse> handleException(Exception ex) {
+        log.error(ex.getMessage(), ex);
+
         ResponseStatus responseStatus =
                 AnnotatedElementUtils.findMergedAnnotation(ex.getClass(), ResponseStatus.class);
 

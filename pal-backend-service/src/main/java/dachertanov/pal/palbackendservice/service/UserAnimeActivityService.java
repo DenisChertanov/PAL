@@ -11,11 +11,10 @@ import dachertanov.pal.palbackendservice.repository.AnimeRepository;
 import dachertanov.pal.palbackendservice.repository.UserAnimeActivityRepository;
 import dachertanov.pal.palbackendservice.repository.UserStatisticRepository;
 import dachertanov.pal.palbackendservice.security.config.SecurityUtil;
-import dachertanov.pal.palbackendservice.security.config.UserDetailsImpl;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.HttpClientErrorException;
 
 import java.util.Optional;
@@ -28,6 +27,7 @@ public class UserAnimeActivityService {
     private final UserAnimeActivityRepository userAnimeActivityRepository;
     private final UserAnimeActivityMapper userAnimeActivityMapper;
     private final UserStatisticRepository userStatisticRepository;
+    private final OutboxService outboxService;
 
     public Optional<UserAnimeActivityOutDto> getActivityByAnimeId(UUID animeId) {
         validateAnimeId(animeId);
@@ -65,7 +65,8 @@ public class UserAnimeActivityService {
     /**
      * Обновляет последний просмотренный по аниме эпизод + обновляет статистику пользователя
      */
-    private void setLastWatchedEpisode(UUID animeId, Integer lastWatchedEpisode) {
+    @Transactional
+    public void setLastWatchedEpisode(UUID animeId, Integer lastWatchedEpisode) {
         UUID userId = SecurityUtil.getCurrentUserId();
 
         Anime anime = animeRepository.getById(animeId);
@@ -78,8 +79,7 @@ public class UserAnimeActivityService {
             userStatistic.setAnimeSpentHours(userStatistic.getAnimeSpentHours() + anime.getDuration());
             userStatistic.setAnimeCount(userStatistic.getAnimeCount() + 1);
             userStatisticRepository.save(userStatistic);
-
-            //TODO положить сообщение в outbox
+            outboxService.saveEvent(userId, animeId);
         }
     }
 

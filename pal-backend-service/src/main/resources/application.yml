@@ -4,6 +4,18 @@ spring:
     url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5432/postgres}
     username: ${SPRING_DATASOURCE_USERNAME:postgres}
     password: ${SPRING_DATASOURCE_PASSWORD:postgres}
+  kafka:
+    consumer:
+      group-id: fm-driver-backend
+      auto-offset-reset: earliest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      properties:
+        spring.json.trusted.packages: ru.fmlogistic.kafka.*, ru.fmlogistic.kafka, ru.fmlogistic.driver.kafka.fmdriver.firebase
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+    bootstrap-servers: localhost:9092
   main:
     allow-circular-references: true # Убрать когда springdoc-openapi-ui выкатят версию без бага
   mvc:
@@ -29,3 +41,10 @@ pal:
       iterations: ${PBKDF_ITERATIONS:200000}
       hash-width: ${PBKDF_HASH_WIDTH:256}
     admin-id: 6dc03ba7-f6f2-4071-ae50-61b36cf30f10
+
+kafka:
+  topics:
+    pal-backend-messages:
+      name: PAL.Messages
+      numPartitions: ${NUM_PARTITIONS:3}
+      replicationFactor: ${REPLICATION_FACTOR:1}

@@ -75,7 +75,7 @@ public class UserAnimeActivityService {
         }
 
         if (lastWatchedEpisode.equals(anime.getEpisodes())) { // Пользователь досмотрел аниме
-            UserStatistic userStatistic = userStatisticRepository.getById(userId);
+            UserStatistic userStatistic = userStatisticRepository.findById(userId).orElse(new UserStatistic(userId));
             userStatistic.setAnimeSpentHours(userStatistic.getAnimeSpentHours() + anime.getDuration());
             userStatistic.setAnimeCount(userStatistic.getAnimeCount() + 1);
             userStatisticRepository.save(userStatistic);

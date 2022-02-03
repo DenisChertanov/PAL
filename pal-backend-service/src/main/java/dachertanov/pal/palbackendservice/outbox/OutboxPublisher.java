@@ -18,7 +18,7 @@ public class OutboxPublisher {
         List<RecommendationOutbox> topRecords = recommendationOutboxRepository.getTop10BySentTimeIsNull();
         int counter = 0;
         for (RecommendationOutbox record : topRecords) {
-            outboxEventsProducer.sendEvent(record.getAggregateId(), record.getPayload());
+            outboxEventsProducer.sendEvent(record.getAggregateId(), record.getPayload(), record.getEventType());
             record.setSentTime(LocalDateTime.now());
             recommendationOutboxRepository.save(record);
             counter++;

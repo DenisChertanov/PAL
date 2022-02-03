@@ -11,7 +11,7 @@ spring:
       key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
       value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
       properties:
-        spring.json.trusted.packages: ru.fmlogistic.kafka.*, ru.fmlogistic.kafka, ru.fmlogistic.driver.kafka.fmdriver.firebase
+        spring.json.trusted.packages: dachertanov.pal.backendservice.kafka.recommendation
     producer:
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
       value-serializer: org.springframework.kafka.support.serializer.JsonSerializer

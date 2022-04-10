@@ -16,6 +16,7 @@ public class AnimePageMapper {
     public AnimePageOutDto outDtoFromPage(Page<Anime> animePage) {
         AnimePageOutDto dto = new AnimePageOutDto();
         dto.setIsLastPage(animePage.isLast());
+        dto.setTotalPages(animePage.getTotalPages());
         dto.setPageNumber(animePage.getNumber());
         dto.setAnimeList(animePage.getContent().stream().map(animeMapper::entityToOut).collect(Collectors.toList()));
 

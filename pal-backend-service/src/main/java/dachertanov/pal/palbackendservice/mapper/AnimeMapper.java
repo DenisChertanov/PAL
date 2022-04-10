@@ -33,6 +33,7 @@ public class AnimeMapper {
     public AnimeOutDto entityToOut(Anime anime) {
         AnimeOutDto animeOutDto = new AnimeOutDto();
         animeOutDto.setAnimeId(anime.getAnimeId());
+        animeOutDto.setImageUrl(anime.getImageUrl());
         animeOutDto.setTitle(anime.getTitle());
         animeOutDto.setMark(anime.getMark());
         animeOutDto.setYear(anime.getYear());

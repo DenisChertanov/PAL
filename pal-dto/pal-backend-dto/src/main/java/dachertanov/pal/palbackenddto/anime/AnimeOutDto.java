@@ -14,11 +14,13 @@ import java.util.UUID;
 
 @Schema(description = "DTO для аниме при передаче на фронт")
 @Data
-@JsonNaming(PropertyNamingStrategies.UpperCamelCaseStrategy.class)
+//@JsonNaming(PropertyNamingStrategies.UpperCamelCaseStrategy.class)
 public class AnimeOutDto {
     @Schema(description = "id аниме", example = "bd12e906-0226-446c-be8b-56e67e9eec0d")
     @NotNull
     private UUID animeId;
+
+    private String imageUrl;
 
     @Schema(description = "Название аниме", example = "Наруто")
     @NotNull

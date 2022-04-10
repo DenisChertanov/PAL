@@ -11,6 +11,7 @@ services:
       - 5432:5432
     volumes:
       - ./data/postgres:/var/lib/postgresql/data
+
   minio:
     image: minio/minio:latest
     volumes:
@@ -25,12 +26,14 @@ services:
       MINIO_ROOT_PASSWORD: minio_password
     entrypoint: sh
     command: -c 'mkdir -p /data/images-bucket && minio server /data --console-address ":9001"'
+
   zookeeper:
     image: wurstmeister/zookeeper:latest
     ports:
       - 2181:2181
     environment:
       - ALLOW_ANONYMOUS_LOGIN=yes
+
   kafka:
     image: wurstmeister/kafka:latest
     ports:

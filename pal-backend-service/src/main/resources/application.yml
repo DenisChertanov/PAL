@@ -35,12 +35,12 @@ pal:
   security:
     jwt:
       secret: ${JWT_SECRET:'123456'}
-      expiration: ${JWT_EXPIRATION:10d}
+      expiration: ${JWT_EXPIRATION:300d}
     pbkdf:
       secret-key: ${PBKDF_SECRET_KEY:secret_key}
       iterations: ${PBKDF_ITERATIONS:200000}
       hash-width: ${PBKDF_HASH_WIDTH:256}
-    admin-id: 6dc03ba7-f6f2-4071-ae50-61b36cf30f10
+    admin-id: a8ade8dc-6d11-4175-8f69-8b65457e577d
 
 kafka:
   topics:

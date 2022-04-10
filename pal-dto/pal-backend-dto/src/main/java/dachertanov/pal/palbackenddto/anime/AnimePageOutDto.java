@@ -10,13 +10,15 @@ import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @Schema(description = "DTO для возврата аниме page")
-@JsonNaming(PropertyNamingStrategies.UpperCamelCaseStrategy.class)
+//@JsonNaming(PropertyNamingStrategies.UpperCamelCaseStrategy.class)
 @Data
 public class AnimePageOutDto {
     @Schema(description = "Порядковый номер страницы аниме", example = "0", minimum = "0")
     @NotNull
     @Min(0)
     private Integer pageNumber;
+
+    private Integer totalPages;
 
     @Schema(description = "Показатель является ли переданная аниме страница последней", example = "false")
     @NotNull

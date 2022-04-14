@@ -1,7 +1,5 @@
 package dachertanov.pal.palbackenddto.anime;
 
-import com.fasterxml.jackson.databind.PropertyNamingStrategies;
-import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
@@ -11,7 +9,6 @@ import javax.validation.constraints.NotNull;
 import java.util.UUID;
 
 @Schema(description = "DTO для отдачи аниме статистики пользвоателя по аниме")
-@JsonNaming(PropertyNamingStrategies.UpperCamelCaseStrategy.class)
 @Data
 public class UserAnimeActivityOutDto {
     @Schema(description = "id пользователя", example = "23be9952-1dbb-4e6e-bb41-a80c212c61ef")

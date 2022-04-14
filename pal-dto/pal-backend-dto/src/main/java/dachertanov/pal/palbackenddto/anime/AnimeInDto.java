@@ -1,7 +1,5 @@
 package dachertanov.pal.palbackenddto.anime;
 
-import com.fasterxml.jackson.databind.PropertyNamingStrategies;
-import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
@@ -12,7 +10,6 @@ import java.util.List;
 
 @Schema(description = "DTO для аниме при передаче на бэк")
 @Data
-@JsonNaming(PropertyNamingStrategies.UpperCamelCaseStrategy.class)
 public class AnimeInDto {
     @Schema(description = "Название аниме", example = "Наруто")
     @NotNull

@@ -19,10 +19,11 @@ public interface AnimeRepository extends JpaRepository<Anime, UUID> {
             "where (:includeStatesCount = 0 or anime.animeState.animeStateId in :includeStates) and " +
             "(:includeTypesCount = 0 or anime.animeType.animeTypeId in :includeTypes) and " +
             "anime.year >= :yearFrom and " +
-            "anime.year <= :yearTo")
+            "anime.year <= :yearTo and " +
+            "anime.title like :namePrefix")
     public List<Anime> searchByAppliedFilters(List<UUID> includeStates, Integer includeStatesCount,
                                               List<UUID> includeTypes, Integer includeTypesCount,
-                                              Integer yearFrom, Integer yearTo);
+                                              Integer yearFrom, Integer yearTo, String namePrefix);
 
     /**
      * Возвращает список аниме, которые содержут ВСЕ переданные жанры (нужно вызвать после searchByAppliedFilters)
@@ -30,10 +31,10 @@ public interface AnimeRepository extends JpaRepository<Anime, UUID> {
     @Query("select anime from Anime anime " +
             "join anime.animeTags tag " +
             "where anime.animeId in :animeIds and " +
-            "tag in :includeGenres " +
+            "tag.animeTagId in :includeGenres " +
             "group by anime.animeId " +
             "having count(anime.animeId) = :includeGenresCount")
-    public List<Anime> searchByIncludeGenres(List<UUID> animeIds, List<UUID> includeGenres, Integer includeGenresCount);
+    public List<Anime> searchByIncludeGenres(List<UUID> animeIds, List<UUID> includeGenres, Long includeGenresCount);
 
     /**
      * Возвращает список аниме, которые содержут хотя бы один из запрещенных фильтров (такие нужно выкинуть).
@@ -42,7 +43,7 @@ public interface AnimeRepository extends JpaRepository<Anime, UUID> {
     @Query("select anime from Anime anime " +
             "join anime.animeTags tag " +
             "where anime.animeId in :animeIds and " +
-            "tag in :excludeGenres " +
+            "tag.animeTagId in :excludeGenres " +
             "group by anime.animeId")
     public List<Anime> searchByExcludeGenres(List<UUID> animeIds, List<UUID> excludeGenres);
 

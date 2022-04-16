@@ -48,7 +48,8 @@ public class SearchAnimeService {
                 appliedFilters.getFilter().getIncludeStates(), appliedFilters.getFilter().getIncludeStates().size(),
                 appliedFilters.getFilter().getIncludeTypes(), appliedFilters.getFilter().getIncludeTypes().size(),
                 appliedFilters.getFilter().getYearFrom(),
-                appliedFilters.getFilter().getYearTo());
+                appliedFilters.getFilter().getYearTo(),
+                appliedFilters.getFilter().getNamePrefix());
 
         List<Anime> secondAnimeList = appliedFilters.getFilter().getIncludeGenres().size() == 0
                 ? firstAnimeList
@@ -57,7 +58,7 @@ public class SearchAnimeService {
                         .map(Anime::getAnimeId)
                         .collect(Collectors.toList()),
                 appliedFilters.getFilter().getIncludeGenres(),
-                appliedFilters.getFilter().getIncludeGenres().size());
+                (long) appliedFilters.getFilter().getIncludeGenres().size());
 
         List<Anime> thirdAnimeList = appliedFilters.getFilter().getExcludeGenres().size() == 0
                 ? new ArrayList<>()

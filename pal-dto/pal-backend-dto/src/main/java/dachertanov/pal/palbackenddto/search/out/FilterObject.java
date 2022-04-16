@@ -1,4 +1,4 @@
-package dachertanov.pal.palbackenddto.search;
+package dachertanov.pal.palbackenddto.search.out;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;

@@ -69,7 +69,7 @@ public class UserAnimeActivityService {
     public void setLastWatchedEpisode(UUID animeId, Integer lastWatchedEpisode) {
         UUID userId = SecurityUtil.getCurrentUserId();
 
-        Anime anime = animeRepository.getById(animeId);
+        Anime anime = animeRepository.findById(animeId).get();
         if (lastWatchedEpisode > anime.getEpisodes()) {
             throw new HttpClientErrorException(HttpStatus.BAD_REQUEST, "В аниме с id \"" + animeId + "\" меньше эпизодов");
         }

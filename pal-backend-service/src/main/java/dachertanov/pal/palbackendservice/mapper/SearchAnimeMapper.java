@@ -1,6 +1,6 @@
 package dachertanov.pal.palbackendservice.mapper;
 
-import dachertanov.pal.palbackenddto.search.FilterObject;
+import dachertanov.pal.palbackenddto.search.out.FilterObject;
 import dachertanov.pal.palbackendservice.entity.AnimeSort;
 import dachertanov.pal.palbackendservice.entity.AnimeState;
 import dachertanov.pal.palbackendservice.entity.AnimeTag;

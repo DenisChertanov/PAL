@@ -1,11 +1,11 @@
-package dachertanov.pal.palbackenddto.search;
+package dachertanov.pal.palbackenddto.search.out;
 
 import lombok.Data;
 
 import java.util.UUID;
 
 @Data
-public class Sort {
+public class State {
     private UUID id;
     private String name;
 }

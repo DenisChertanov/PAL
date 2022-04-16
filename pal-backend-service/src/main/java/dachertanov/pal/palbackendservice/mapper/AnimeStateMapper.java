@@ -1,6 +1,6 @@
 package dachertanov.pal.palbackendservice.mapper;
 
-import dachertanov.pal.palbackenddto.search.State;
+import dachertanov.pal.palbackenddto.search.out.State;
 import dachertanov.pal.palbackendservice.entity.AnimeState;
 import org.springframework.stereotype.Component;
 

@@ -1,6 +1,6 @@
 package dachertanov.pal.palbackendservice.mapper;
 
-import dachertanov.pal.palbackenddto.search.Sort;
+import dachertanov.pal.palbackenddto.search.out.Sort;
 import dachertanov.pal.palbackendservice.entity.AnimeSort;
 import org.springframework.stereotype.Component;
 

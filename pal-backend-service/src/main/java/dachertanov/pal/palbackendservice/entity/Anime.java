@@ -1,5 +1,6 @@
 package dachertanov.pal.palbackendservice.entity;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -49,6 +50,18 @@ public class Anime {
 
     @NotNull
     private LocalDateTime addedTime;
+
+    @NotNull
+    private String season;
+
+    @NotNull
+    private String ageRating;
+
+    @NotNull
+    private String episodeDuration;
+
+    @NotNull
+    private String voice;
 
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY)

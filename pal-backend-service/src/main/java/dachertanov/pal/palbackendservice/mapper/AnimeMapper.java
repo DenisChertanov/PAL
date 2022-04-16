@@ -26,6 +26,10 @@ public class AnimeMapper {
         anime.setAnimeState(animeState);
         anime.setAnimeType(animeType);
         anime.setAnimeTags(animeTags);
+        anime.setSeason(animeInDto.getSeason());
+        anime.setAgeRating(animeInDto.getAgeRating());
+        anime.setEpisodeDuration(animeInDto.getEpisodeDuration());
+        anime.setVoice(animeInDto.getVoice());
 
         return anime;
     }
@@ -46,6 +50,10 @@ public class AnimeMapper {
         animeOutDto.setStateTitle(anime.getAnimeState().getState());
         animeOutDto.setTypeTitle(anime.getAnimeType().getType());
         animeOutDto.setAnimeTags(anime.getAnimeTags().stream().map(AnimeTag::getTag).collect(Collectors.toList()));
+        animeOutDto.setSeason(anime.getSeason());
+        animeOutDto.setAgeRating(anime.getAgeRating());
+        animeOutDto.setEpisodeDuration(anime.getEpisodeDuration());
+        animeOutDto.setVoice(anime.getVoice());
 
         return animeOutDto;
     }

@@ -68,4 +68,20 @@ public class AnimeOutDto {
     @Schema(description = "Список аниме тэгов", example = "[\"Драма\", \"Романтика\"]")
     @NotNull
     private List<String> animeTags;
+
+    @Schema(description = "Сезонг", example = "Лето 2014")
+    @NotNull
+    private String season;
+
+    @Schema(description = "Возрастной рейтинг", example = "NC-17")
+    @NotNull
+    private String ageRating;
+
+    @Schema(description = "Длительность эпизода", example = "23 мин. ~ серия")
+    @NotNull
+    private String episodeDuration;
+
+    @Schema(description = "Озвучка", example = "AniDUB, AniLibria")
+    @NotNull
+    private String voice;
 }

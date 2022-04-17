@@ -1,6 +1,5 @@
 package dachertanov.pal.palbackendservice.entity;
 
-import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
 import javax.persistence.*;

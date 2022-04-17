@@ -11,6 +11,7 @@ import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Entity
@@ -34,4 +35,6 @@ public class UserAnimeActivity implements Serializable {
 
     @NotNull
     private Integer lastWatchedEpisode = 0;
+
+    private LocalDateTime dateTimeWatched;
 }

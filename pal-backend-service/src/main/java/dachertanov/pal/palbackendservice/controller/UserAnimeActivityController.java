@@ -31,16 +31,16 @@ public class UserAnimeActivityController {
     }
 
     @PostMapping("/update-review/{animeId}")
-    public ResponseEntity<UserAnimeActivityOutDto> updateActivityMark(@PathVariable UUID animeId,
+    public ResponseEntity<UserAnimeActivityOutDto> updateActivityReview(@PathVariable UUID animeId,
                                                                       @RequestBody String review) {
         return userAnimeActivityService.updateActivity(animeId, review, UserAnimeActivityType.REVIEW)
                 .map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    @PostMapping("/update-last-watched-episode/{animeId}")
-    public ResponseEntity<UserAnimeActivityOutDto> updateActivityMark(@PathVariable UUID animeId,
-                                                                      @RequestBody Integer lastWatchedEpisode) {
+    @GetMapping("/update-last-watched-episode/{animeId}/{lastWatchedEpisode}")
+    public ResponseEntity<UserAnimeActivityOutDto> updateActivityLastWatchedEpisode(@PathVariable UUID animeId,
+                                                                      @PathVariable Integer lastWatchedEpisode) {
         return userAnimeActivityService.updateActivity(animeId, lastWatchedEpisode, UserAnimeActivityType.LAST_WATCHED_EPISODE)
                 .map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());

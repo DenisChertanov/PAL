@@ -8,7 +8,9 @@ import dachertanov.pal.palbackendservice.mapper.AnimeMapper;
 import dachertanov.pal.palbackendservice.mapper.AnimePageMapper;
 import dachertanov.pal.palbackendservice.mapper.SearchAnimeMapper;
 import dachertanov.pal.palbackendservice.repository.*;
+import dachertanov.pal.palbackendservice.security.config.SecurityUtil;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -22,6 +24,7 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+@Slf4j
 @Service
 @AllArgsConstructor
 public class SearchAnimeService {
@@ -33,6 +36,7 @@ public class SearchAnimeService {
     private final AnimeMapper animeMapper;
     private final AnimeRepository animeRepository;
     private final AnimePageMapper animePageMapper;
+    private final UserAnimeActivityRepository userAnimeActivityRepository;
 
     public FilterObject getFilterObject() {
         List<AnimeTag> animeTags = animeTagRepository.findAll();
@@ -77,10 +81,31 @@ public class SearchAnimeService {
                 .filter(animeId -> !excludeIds.contains(animeId))
                 .collect(Collectors.toList());
 
+        List<UUID> fifthAnimeList = fourthAnimeList;
+        if (appliedFilters.getFilter().isExcludeWatched()) {
+            fifthAnimeList = animeListAfterExcludeWatched(fourthAnimeList);
+        }
+
         Page<Anime> result = animeRepository.findAllByAnimeIdIn(
-                fourthAnimeList,
+                fifthAnimeList,
                 PageRequest.of(appliedFilters.getPage().getPageNumber(), appliedFilters.getPage().getPageSize()));
 
         return Optional.of(animePageMapper.outDtoFromPage(result));
+    }
+
+    private List<UUID> animeListAfterExcludeWatched(List<UUID> animeList) {
+        UUID userId;
+        List<UUID> result = animeList;
+
+        try {
+            userId = SecurityUtil.getCurrentUserId();
+
+            List<UUID> allWatchedAnimeIds = userAnimeActivityRepository.findAllWatchedAnime(userId);
+            result = animeRepository.notWatchedAnimeInIds(animeList, allWatchedAnimeIds);
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+        }
+
+        return result;
     }
 }

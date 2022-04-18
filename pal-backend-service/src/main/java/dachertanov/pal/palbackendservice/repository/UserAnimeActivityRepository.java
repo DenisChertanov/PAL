@@ -16,4 +16,10 @@ public interface UserAnimeActivityRepository extends JpaRepository<UserAnimeActi
             "where userAnimeActivity.userId = :userId " +
             "and userAnimeActivity.dateTimeWatched is not null")
     Page<UUID> findAllTopByUserIdEquals(UUID userId, Pageable pageable);
+
+    @Query("select userAnimeActivity.animeId " +
+            "from UserAnimeActivity userAnimeActivity " +
+            "where userAnimeActivity.userId = :userId " +
+            "and userAnimeActivity.dateTimeWatched is not null")
+    List<UUID> findAllWatchedAnime(UUID userId);
 }

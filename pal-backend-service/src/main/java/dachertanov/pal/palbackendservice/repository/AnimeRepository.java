@@ -50,4 +50,10 @@ public interface AnimeRepository extends JpaRepository<Anime, UUID> {
     @Query("select anime from Anime anime " +
             "where anime.animeId in :animeIds")
     public Page<Anime> findAllByAnimeIdIn(List<UUID> animeIds, Pageable pageable);
+
+    @Query("select anime.animeId " +
+            "from Anime anime " +
+            "where anime.animeId in :includeAnimeIds " +
+            "and anime.animeId not in :excludeAnimeIds")
+    public List<UUID> notWatchedAnimeInIds(List<UUID> includeAnimeIds, List<UUID> excludeAnimeIds);
 }

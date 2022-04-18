@@ -25,7 +25,7 @@ public class Filter {
         try {
             yearFrom = Integer.parseInt(this.yearFrom);
         } catch (Exception e) {
-            log.error(e.getMessage(), e);
+            log.error(e.getMessage());
         }
 
         return yearFrom;
@@ -37,7 +37,7 @@ public class Filter {
         try {
             yearTo = Integer.parseInt(this.yearTo);
         } catch (Exception e) {
-            log.error(e.getMessage(), e);
+            log.error(e.getMessage());
         }
 
         return yearTo;

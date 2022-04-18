@@ -25,7 +25,8 @@ public class UserAnimeActivityOutDto {
     @Max(10)
     private Double mark = 0.0;
 
-    private String review;
+    @NotNull
+    private String review = "";
 
     @Schema(description = "Последний просмотренный эпизод", example = "1", minimum = "0")
     @NotNull

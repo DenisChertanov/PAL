@@ -4,9 +4,11 @@ import dachertanov.pal.palbackenddto.anime.UserAnimeActivityOutDto;
 import dachertanov.pal.palbackenddto.anime.UserAnimeActivityType;
 import dachertanov.pal.palbackendservice.service.UserAnimeActivityService;
 import lombok.AllArgsConstructor;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.constraints.NotNull;
 import java.util.UUID;
 
 @RestController
@@ -22,17 +24,17 @@ public class UserAnimeActivityController {
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    @PostMapping("/update-mark/{animeId}")
+    @PostMapping(value = "/update-mark/{animeId}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<UserAnimeActivityOutDto> updateActivityMark(@PathVariable UUID animeId,
-                                                                      @RequestBody Double mark) {
-        return userAnimeActivityService.updateActivity(animeId, mark, UserAnimeActivityType.MARK)
+                                                                      @RequestPart @NotNull String mark) {
+        return userAnimeActivityService.updateActivity(animeId, Double.parseDouble(mark), UserAnimeActivityType.MARK)
                 .map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    @PostMapping("/update-review/{animeId}")
+    @PostMapping(value = "/update-review/{animeId}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<UserAnimeActivityOutDto> updateActivityReview(@PathVariable UUID animeId,
-                                                                      @RequestBody String review) {
+                                                                        @RequestPart @NotNull String review) {
         return userAnimeActivityService.updateActivity(animeId, review, UserAnimeActivityType.REVIEW)
                 .map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());

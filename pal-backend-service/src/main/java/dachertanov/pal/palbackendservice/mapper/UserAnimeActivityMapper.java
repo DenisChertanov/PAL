@@ -13,7 +13,7 @@ public class UserAnimeActivityMapper {
         dto.setUserId(entity.getUserId());
         dto.setAnimeId(entity.getAnimeId());
         dto.setMark(entity.getMark());
-        dto.setReview(entity.getReview());
+        dto.setReview(entity.getReview() == null ? "" : entity.getReview());
         dto.setLastWatchedEpisode(entity.getLastWatchedEpisode());
 
         return dto;

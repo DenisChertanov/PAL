@@ -10,7 +10,6 @@ import java.util.UUID;
 
 @Schema(description = "DTO для передачи информации о пользователе на фронт")
 @Data
-@JsonNaming(PropertyNamingStrategies.UpperCamelCaseStrategy.class)
 public class UserInfoOutDto {
     @Schema(description = "id пользователя", example = "bd12e906-0226-446c-be8b-56e67e9eec0d")
     @NotNull

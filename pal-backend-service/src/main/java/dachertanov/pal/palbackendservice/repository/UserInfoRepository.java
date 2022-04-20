@@ -2,6 +2,7 @@ package dachertanov.pal.palbackendservice.repository;
 
 import dachertanov.pal.palbackenddto.user.UserSearchOutDto;
 import dachertanov.pal.palbackendservice.entity.UserInfo;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -17,5 +18,5 @@ public interface UserInfoRepository extends JpaRepository<UserInfo, UUID> {
             "inner join UserStatistic userStatistic " +
             "on userStatistic.userId = userInfo.userId " +
             "where concat(userInfo.firstName, ' ', userInfo.lastName) like :userPrefix")
-    List<UserSearchOutDto> findUsers(String userPrefix, Pageable pageable);
+    Page<UserSearchOutDto> findUsers(String userPrefix, Pageable pageable);
 }

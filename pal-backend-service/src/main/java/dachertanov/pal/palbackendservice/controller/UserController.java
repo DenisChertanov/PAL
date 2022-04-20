@@ -5,6 +5,7 @@ import dachertanov.pal.palbackenddto.user.UserSearchInDto;
 import dachertanov.pal.palbackenddto.user.UserSearchOutDto;
 import dachertanov.pal.palbackendservice.service.UserService;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,7 +26,7 @@ public class UserController {
     }
 
     @PostMapping("/search")
-    public List<UserSearchOutDto> findUsers(@RequestBody UserSearchInDto userSearchInDto) {
+    public Page<UserSearchOutDto> findUsers(@RequestBody UserSearchInDto userSearchInDto) {
         return userService.findUsers(userSearchInDto);
     }
 }

@@ -1,11 +1,14 @@
 package dachertanov.pal.palbackendservice.controller;
 
 import dachertanov.pal.palbackenddto.user.UserInfoOutDto;
+import dachertanov.pal.palbackenddto.user.UserSearchInDto;
+import dachertanov.pal.palbackenddto.user.UserSearchOutDto;
 import dachertanov.pal.palbackendservice.service.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -19,5 +22,10 @@ public class UserController {
         return userService.getUserById(userId)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
+    }
+
+    @PostMapping("/search")
+    public List<UserSearchOutDto> findUsers(@RequestBody UserSearchInDto userSearchInDto) {
+        return userService.findUsers(userSearchInDto);
     }
 }

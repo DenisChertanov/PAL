@@ -48,6 +48,7 @@ public class SearchAnimeService {
     }
 
     public Optional<AnimePageOutDto> searchByAppliedFilters(AppliedFilters appliedFilters) {
+        // Список аниме после фильтрации по включенным статусам, включенным типам, годам от и до, префиксу имени
         List<Anime> firstAnimeList = animeRepository.searchByAppliedFilters(
                 appliedFilters.getFilter().getIncludeStates(), appliedFilters.getFilter().getIncludeStates().size(),
                 appliedFilters.getFilter().getIncludeTypes(), appliedFilters.getFilter().getIncludeTypes().size(),
@@ -55,6 +56,7 @@ public class SearchAnimeService {
                 appliedFilters.getFilter().getYearTo(),
                 appliedFilters.getFilter().getNamePrefix());
 
+        // Список аниме после фильтрации по включенным жанрам + наложение предыдущих фильтров
         List<Anime> secondAnimeList = appliedFilters.getFilter().getIncludeGenres().size() == 0
                 ? firstAnimeList
                 : animeRepository.searchByIncludeGenres(
@@ -64,6 +66,7 @@ public class SearchAnimeService {
                 appliedFilters.getFilter().getIncludeGenres(),
                 (long) appliedFilters.getFilter().getIncludeGenres().size());
 
+        // Список аниме, которые надо ИСКЛЮЧИТЬ после фильтрации по исключенным жанрам + наложение предыдущих фильтров
         List<Anime> thirdAnimeList = appliedFilters.getFilter().getExcludeGenres().size() == 0
                 ? new ArrayList<>()
                 : animeRepository.searchByExcludeGenres(
@@ -72,15 +75,18 @@ public class SearchAnimeService {
                         .collect(Collectors.toList()),
                 appliedFilters.getFilter().getExcludeGenres());
 
+        // Список id аниме, которые нужно исключить из реузльтатов
         List<UUID> excludeIds = thirdAnimeList.stream()
                 .map(Anime::getAnimeId)
                 .collect(Collectors.toList());
 
+        // Фильтруем по исключенным id из-за исключения жанров
         List<UUID> fourthAnimeList = secondAnimeList.stream()
                 .map(Anime::getAnimeId)
                 .filter(animeId -> !excludeIds.contains(animeId))
                 .collect(Collectors.toList());
 
+        // id аниме после предыдущих фильтров + исключения просмотренного
         List<UUID> fifthAnimeList = fourthAnimeList;
         if (appliedFilters.getFilter().isExcludeWatched()) {
             fifthAnimeList = animeListAfterExcludeWatched(fourthAnimeList);

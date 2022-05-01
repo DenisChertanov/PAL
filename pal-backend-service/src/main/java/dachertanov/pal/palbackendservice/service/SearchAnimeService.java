@@ -13,10 +13,8 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpStatus;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.HttpClientErrorException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -92,9 +90,13 @@ public class SearchAnimeService {
             fifthAnimeList = animeListAfterExcludeWatched(fourthAnimeList);
         }
 
-        Page<Anime> result = animeRepository.findAllByAnimeIdIn(
+        UUID userId = SecurityUtil.getCurrentUserId();
+        Page<Anime> result = animeRepository.findAllByAnimeIdInJoinUserRecommendation(
                 fifthAnimeList,
-                PageRequest.of(appliedFilters.getPage().getPageNumber(), appliedFilters.getPage().getPageSize()));
+                userId,
+                PageRequest.of(appliedFilters.getPage().getPageNumber(),
+                        appliedFilters.getPage().getPageSize(),
+                        getSortById(appliedFilters.getFilter().getSortsBy())));
 
         return Optional.of(animePageMapper.outDtoFromPage(result));
     }
@@ -113,5 +115,43 @@ public class SearchAnimeService {
         }
 
         return result;
+    }
+
+    private Sort getSortById(UUID sortId) {
+        if (sortId == null) {
+            return Sort.unsorted();
+        }
+
+        Optional<AnimeSort> opAnimeSort = animeSortRepository.findById(sortId);
+
+        if (opAnimeSort.isPresent()) {
+            AnimeSort animeSort = opAnimeSort.get();
+            String sortName = animeSort.getSort();
+            Sort sort;
+
+            switch (sortName) {
+                case "Рейтингу":
+                    sort = Sort.by(Sort.Direction.DESC, "mark");
+                    break;
+                case "Любимым жанрам":
+                    sort = Sort.by(Sort.Direction.DESC, "userAnimeRecommendation.recommendationMark", "mark");
+                    break;
+                case "Дате выхода":
+                    sort = Sort.by(Sort.Direction.DESC, "year");
+                    break;
+                case "Алфавиту от А до Я":
+                    sort = Sort.by(Sort.Direction.ASC, "title");
+                    break;
+                case "Алфавиту от Я до А":
+                    sort = Sort.by(Sort.Direction.DESC, "title");
+                    break;
+                default:
+                    sort = Sort.unsorted();
+                    break;
+            }
+
+            return sort;
+        }
+        return Sort.unsorted();
     }
 }

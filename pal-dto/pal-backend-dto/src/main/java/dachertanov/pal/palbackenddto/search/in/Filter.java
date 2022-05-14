@@ -18,6 +18,7 @@ public class Filter {
     private UUID sortsBy;
     private boolean excludeWatched = false;
     private String namePrefix;
+    private List<UUID> watchedByUsers;
 
     public Integer getYearFrom() {
         int yearFrom = 1900;

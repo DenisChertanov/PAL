@@ -90,9 +90,12 @@ public class SearchAnimeService {
             fifthAnimeList = animeListAfterExcludeWatched(fourthAnimeList);
         }
 
+        // id аниме после применения фильтра "Просмотрено другими"
+        List<UUID> sixthAnimeList = animeIdsAfterApplyWhoWatched(fifthAnimeList, appliedFilters.getFilter().getWatchedByUsers());
+
         UUID userId = SecurityUtil.getCurrentUserId();
         Page<Anime> result = animeRepository.findAllByAnimeIdInJoinUserRecommendation(
-                fifthAnimeList,
+                sixthAnimeList,
                 userId,
                 PageRequest.of(appliedFilters.getPage().getPageNumber(),
                         appliedFilters.getPage().getPageSize(),
@@ -153,5 +156,11 @@ public class SearchAnimeService {
             return sort;
         }
         return Sort.unsorted();
+    }
+
+    private List<UUID> animeIdsAfterApplyWhoWatched(List<UUID> animeIds, List<UUID> watchedByUsers) {
+        return watchedByUsers.isEmpty()
+                ? animeIds
+                : animeRepository.findAllByAnimeIdsInAndWatchedByUsers(animeIds, watchedByUsers, (long) watchedByUsers.size());
     }
 }

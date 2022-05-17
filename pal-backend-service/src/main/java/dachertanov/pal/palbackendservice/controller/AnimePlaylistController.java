@@ -22,7 +22,7 @@ public class AnimePlaylistController {
     private final AnimePlaylistService animePlaylistService;
 
     @GetMapping("/create-empty")
-    private ResponseEntity<AnimePlaylistOutDto> createEmptyPlaylist() {
+    public ResponseEntity<AnimePlaylistOutDto> createEmptyPlaylist() {
         return ResponseEntity.ok(animePlaylistService.createEmptyPlaylist());
     }
 

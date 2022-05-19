@@ -36,4 +36,9 @@ public class UserController {
     public ResponseEntity<UserInfoOutDto> uploadAnimeImage(@RequestPart @NotNull MultipartFile file) throws Exception {
         return ResponseEntity.ok(userService.uploadUserImage(file));
     }
+
+    @GetMapping("/me")
+    public ResponseEntity<UserInfoOutDto> getCurrentUserInfo() {
+        return ResponseEntity.ok(userService.getCurrentUserInfoOutDto());
+    }
 }

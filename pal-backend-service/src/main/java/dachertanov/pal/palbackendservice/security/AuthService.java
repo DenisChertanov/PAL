@@ -35,21 +35,21 @@ public class AuthService {
      */
     public String signIn(String authHeader) {
         String[] credentials = getAuthCredentials(authHeader);
-        String userId = credentials[0];
+        String username = credentials[0];
         String userPassword = credentials[1];
 
-        Optional<UserInfo> userOptional = userInfoRepository.findById(UUID.fromString(userId));
+        Optional<UserInfo> userOptional = userInfoRepository.findByUsernameEquals(username);
         if (userOptional.isPresent()) {
             UserInfo userInfo = userOptional.get();
             if (passwordEncoder.matches(userPassword, userInfo.getHashPassword())) {
-                return jwtUtils.generateToken(userId);
+                return jwtUtils.generateToken(userInfo.getUserId().toString());
             } else {
-                log.error("Пользователь с user_id \"" + userId + "\" имеет другой пароль");
-                throw new HttpClientErrorException(HttpStatus.UNAUTHORIZED, "Пользователь с user_id \"" + userId + "\" имеет другой пароль");
+                log.error("Пользователь с username \"" + username + "\" имеет другой пароль");
+                throw new HttpClientErrorException(HttpStatus.UNAUTHORIZED, "Пользователь с username \"" + username + "\" имеет другой пароль");
             }
         } else {
-            log.error("Пользователь с user_id \"" + userId + "\" не найден");
-            throw new HttpClientErrorException(HttpStatus.FORBIDDEN, "Пользователь с user_id \"" + userId + "\" не найден");
+            log.error("Пользователь с username \"" + username + "\" не найден");
+            throw new HttpClientErrorException(HttpStatus.FORBIDDEN, "Пользователь с username \"" + username + "\" не найден");
         }
     }
 
@@ -57,6 +57,8 @@ public class AuthService {
      * Возвращает DTO с зарегистрированным пользователем
      */
     public UserInfoOutDto signUp(UserInfoInDto userInfoInDto) {
+        validateUniqueUsername(userInfoInDto.getUsername());
+
         UserInfo userInfo = userInfoMapper.inDtoToEntity(userInfoInDto);
         userInfo = userInfoRepository.save(userInfo);
         userStatisticRepository.save(new UserStatistic(userInfo.getUserId()));
@@ -72,5 +74,14 @@ public class AuthService {
         byte[] credDecoded = Base64.getDecoder().decode(base64Credentials);
         String credentials = new String(credDecoded, StandardCharsets.UTF_8);
         return credentials.split(":", 2);
+    }
+
+    private void validateUniqueUsername(String username) {
+        userInfoRepository.findByUsernameEquals(username)
+                .ifPresent(userInfo -> {
+                    String logMessage = "User with username = " + username + " already exists";
+                    log.error(logMessage);
+                    throw new HttpClientErrorException(HttpStatus.BAD_REQUEST, logMessage);
+                });
     }
 }

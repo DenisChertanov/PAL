@@ -50,6 +50,11 @@ public class UserService {
         return userInfoMapper.entityToOutDto(userInfo);
     }
 
+    @Transactional
+    public UserInfoOutDto getCurrentUserInfoOutDto() {
+        return userInfoMapper.entityToOutDto(getCurrentUserInfo());
+    }
+
     private UserInfo getCurrentUserInfo() {
         UUID userId = SecurityUtil.getCurrentUserId();
         return userInfoRepository.findById(userId)

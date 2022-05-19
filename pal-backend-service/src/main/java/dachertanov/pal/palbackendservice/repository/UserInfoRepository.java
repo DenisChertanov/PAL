@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 public interface UserInfoRepository extends JpaRepository<UserInfo, UUID> {
@@ -19,4 +20,6 @@ public interface UserInfoRepository extends JpaRepository<UserInfo, UUID> {
             "on userStatistic.userId = userInfo.userId " +
             "where concat(userInfo.firstName, ' ', userInfo.lastName) like :userPrefix")
     Page<UserSearchOutDto> findUsers(String userPrefix, Pageable pageable);
+
+    Optional<UserInfo> findByUsernameEquals(String username);
 }

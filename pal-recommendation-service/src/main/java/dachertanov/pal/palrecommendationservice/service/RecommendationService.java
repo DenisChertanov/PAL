@@ -4,8 +4,10 @@ import dachertanov.pal.palrecommendationdto.WatchedAnime;
 import dachertanov.pal.palrecommendationservice.entity.Anime;
 import dachertanov.pal.palrecommendationservice.entity.AnimeTagCntResponse;
 import dachertanov.pal.palrecommendationservice.entity.UserAnimeRecommendation;
+import dachertanov.pal.palrecommendationservice.entity.UserFavouriteGenres;
 import dachertanov.pal.palrecommendationservice.repository.AnimeRepository;
 import dachertanov.pal.palrecommendationservice.repository.UserAnimeRecommendationRepository;
+import dachertanov.pal.palrecommendationservice.repository.UserFavouriteGenresRepository;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -23,6 +25,7 @@ import java.util.stream.Collectors;
 public class RecommendationService {
     private final UserAnimeRecommendationRepository userAnimeRecommendationRepository;
     private final AnimeRepository animeRepository;
+    private final UserFavouriteGenresRepository userFavouriteGenresRepository;
 
     @Transactional
     public void updateRecommendation(WatchedAnime watchedAnime) {
@@ -31,6 +34,8 @@ public class RecommendationService {
                         .stream()
                         .collect(Collectors.toMap(AnimeTagCntResponse::getAnimeTagId, Function.identity()));
         log.info("Tags popularity: {}", tagsPopularity);
+
+        updateUserFavouriteGenres(watchedAnime.getUserId(), tagsPopularity);
 
         List<Anime> animeList = animeRepository.findAll();
         for (var anime : animeList) {
@@ -43,6 +48,13 @@ public class RecommendationService {
 
             userAnimeRecommendationRepository.save(
                     new UserAnimeRecommendation(watchedAnime.getUserId(), anime.getAnimeId(), recommendationMark));
+        }
+    }
+
+    private void updateUserFavouriteGenres(UUID userId, Map<UUID, AnimeTagCntResponse> tagsPopularity) {
+        for (var tagId : tagsPopularity.keySet()) {
+            AnimeTagCntResponse tagCntResponse = tagsPopularity.get(tagId);
+            userFavouriteGenresRepository.save(new UserFavouriteGenres(userId, tagId, (double) tagCntResponse.getCnt()));
         }
     }
 }

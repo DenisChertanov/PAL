@@ -1,5 +1,6 @@
 package dachertanov.pal.palbackendservice.repository;
 
+import dachertanov.pal.palbackenddto.user.AnimeTypeDistributionOutDto;
 import dachertanov.pal.palbackendservice.entity.Anime;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -72,4 +73,10 @@ public interface AnimeRepository extends JpaRepository<Anime, UUID> {
             "where anime.animeId in :animeIds " +
             "and userAnimeRecommendation.userId = :userId")
     public Page<Anime> findAllByAnimeIdInJoinUserRecommendation(List<UUID> animeIds, UUID userId, Pageable pageable);
+
+    @Query("select new dachertanov.pal.palbackenddto.user.AnimeTypeDistributionOutDto(anime.animeType.animeTypeId, anime.animeType.type, count(anime.animeId)) " +
+            "from Anime anime " +
+            "where anime.animeId in :watchedAnimeIds " +
+            "group by anime.animeType.animeTypeId, anime.animeType.type")
+    List<AnimeTypeDistributionOutDto> getUserAnimeTypeDistribution(List<UUID> watchedAnimeIds);
 }

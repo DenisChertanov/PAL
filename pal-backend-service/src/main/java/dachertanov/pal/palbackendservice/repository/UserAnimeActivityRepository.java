@@ -7,6 +7,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -22,4 +23,11 @@ public interface UserAnimeActivityRepository extends JpaRepository<UserAnimeActi
             "where userAnimeActivity.userId = :userId " +
             "and userAnimeActivity.dateTimeWatched is not null")
     List<UUID> findAllWatchedAnime(UUID userId);
+
+    @Query("select count(userAnimeActivity.animeId) " +
+            "from UserAnimeActivity userAnimeActivity " +
+            "where userAnimeActivity.userId = :userId " +
+            "and userAnimeActivity.dateTimeWatched is not null " +
+            "and userAnimeActivity.dateTimeWatched < :dateTime")
+    Long getAllWatchedAnimeBeforeDate(LocalDateTime dateTime, UUID userId);
 }

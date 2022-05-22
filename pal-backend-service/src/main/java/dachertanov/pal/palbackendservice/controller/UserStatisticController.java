@@ -1,6 +1,9 @@
 package dachertanov.pal.palbackendservice.controller;
 
 import dachertanov.pal.palbackenddto.anime.AnimeOutDto;
+import dachertanov.pal.palbackenddto.user.AnimeTypeDistributionOutDto;
+import dachertanov.pal.palbackenddto.user.UserAnimeTimeDistributionOutDto;
+import dachertanov.pal.palbackenddto.user.UserFavouriteGenresOutDto;
 import dachertanov.pal.palbackenddto.user.UserStatisticOutDto;
 import dachertanov.pal.palbackendservice.service.UserStatisticService;
 import lombok.AllArgsConstructor;
@@ -31,5 +34,20 @@ public class UserStatisticController {
     @GetMapping("/last-watched-anime/{userId}")
     public List<AnimeOutDto> getLastWatchedAnime(@PathVariable UUID userId) {
         return userStatisticService.getLastWatchedAnime(userId, NUMBER_OF_LAST_WATCHED_ANIME);
+    }
+
+    @GetMapping("/favourite-genres/{userId}")
+    public List<UserFavouriteGenresOutDto> getUserFavouriteGenres(@PathVariable UUID userId) {
+        return userStatisticService.getUserFavouriteGenres(userId);
+    }
+
+    @GetMapping("/anime-type-distribution/{userId}")
+    public List<AnimeTypeDistributionOutDto> getUserAnimeTypeDistribution(@PathVariable UUID userId) {
+        return userStatisticService.getUserAnimeTypeDistribution(userId);
+    }
+
+    @GetMapping("/anime-time-distribution/{userId}")
+    public List<UserAnimeTimeDistributionOutDto> getUserAnimeTimeDistribution(@PathVariable UUID userId) {
+        return userStatisticService.getUserAnimeTimeDistribution(userId);
     }
 }

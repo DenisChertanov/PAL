@@ -8,6 +8,7 @@ import dachertanov.pal.palbackendservice.mapper.UserInfoMapper;
 import dachertanov.pal.palbackendservice.repository.UserInfoRepository;
 import dachertanov.pal.palbackendservice.repository.UserStatisticRepository;
 import dachertanov.pal.palbackendservice.security.config.JwtUtils;
+import dachertanov.pal.palbackendservice.service.UserStatisticService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -29,6 +30,7 @@ public class AuthService {
     private final JwtUtils jwtUtils;
     private final UserInfoMapper userInfoMapper;
     private final UserStatisticRepository userStatisticRepository;
+    private final UserStatisticService userStatisticService;
 
     /**
      * Возвращает jwt токен по переданным Basic Auth
@@ -62,6 +64,9 @@ public class AuthService {
         UserInfo userInfo = userInfoMapper.inDtoToEntity(userInfoInDto);
         userInfo = userInfoRepository.save(userInfo);
         userStatisticRepository.save(new UserStatistic(userInfo.getUserId()));
+
+        userStatisticService.initFavouriteGenres(userInfo.getUserId());
+        userStatisticService.initAnimeRecommendation(userInfo.getUserId());
 
         return userInfoMapper.entityToOutDto(userInfo);
     }

@@ -30,15 +30,23 @@ public class S3Service {
                         .object(filePathInBucket)
                         .filename(filePath)
                         .build());
-        String url = minioClient.getPresignedObjectUrl(
-                GetPresignedObjectUrlArgs.builder()
-                        .method(Method.GET)
-                        .bucket(s3Properties.getBucket())
-                        .object(filePathInBucket)
-                        .build());
+
+//        String url = minioClient.getPresignedObjectUrl(
+//                GetPresignedObjectUrlArgs.builder()
+//                        .method(Method.GET)
+//                        .bucket(s3Properties.getBucket())
+//                        .object(filePathInBucket)
+//                        .build());
+
+        String publicUrl = s3Properties.getUrl() + File.separator +
+                s3Properties.getBucket() + File.separator +
+                "images" + File.separator +
+                imageKey + File.separator +
+                file.getOriginalFilename();
+
         deleteTempFile(filePath);
 
-        return url;
+        return publicUrl;
     }
 
     private String getFile(MultipartFile file) throws Exception {

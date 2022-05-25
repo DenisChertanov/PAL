@@ -79,4 +79,8 @@ public class Anime {
             inverseJoinColumns = @JoinColumn(name = "anime_tag_id")
     )
     private List<AnimeTag> animeTags;
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "anime_id", referencedColumnName = "anime_id")
+    private AnimeRating animeRating;
 }

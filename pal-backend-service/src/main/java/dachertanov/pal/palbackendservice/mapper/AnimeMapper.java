@@ -2,6 +2,7 @@ package dachertanov.pal.palbackendservice.mapper;
 
 import dachertanov.pal.palbackenddto.anime.AnimeInDto;
 import dachertanov.pal.palbackenddto.anime.AnimeOutDto;
+import dachertanov.pal.palbackenddto.anime.rating.AnimeRatingItemDto;
 import dachertanov.pal.palbackendservice.entity.Anime;
 import dachertanov.pal.palbackendservice.entity.AnimeState;
 import dachertanov.pal.palbackendservice.entity.AnimeTag;
@@ -56,5 +57,19 @@ public class AnimeMapper {
         animeOutDto.setVoice(anime.getVoice());
 
         return animeOutDto;
+    }
+
+    public AnimeRatingItemDto entityToRatingDto(Anime anime) {
+        AnimeRatingItemDto animeRatingItemDto = new AnimeRatingItemDto();
+        animeRatingItemDto.setAnimeId(anime.getAnimeId());
+        animeRatingItemDto.setImageUrl(anime.getImageUrl());
+        animeRatingItemDto.setTitle(anime.getTitle());
+        animeRatingItemDto.setMark(anime.getMark());
+        animeRatingItemDto.setType(anime.getAnimeType().getType());
+        animeRatingItemDto.setEpisodes(anime.getEpisodes());
+        animeRatingItemDto.setState(anime.getAnimeState().getState());
+        animeRatingItemDto.setYear(anime.getYear());
+
+        return animeRatingItemDto;
     }
 }

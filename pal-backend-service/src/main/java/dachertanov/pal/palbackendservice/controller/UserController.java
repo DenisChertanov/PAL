@@ -3,6 +3,7 @@ package dachertanov.pal.palbackendservice.controller;
 import dachertanov.pal.palbackenddto.user.UserInfoOutDto;
 import dachertanov.pal.palbackenddto.user.UserSearchInDto;
 import dachertanov.pal.palbackenddto.user.UserSearchOutDto;
+import dachertanov.pal.palbackenddto.user.rating.UserRatingListOutDto;
 import dachertanov.pal.palbackendservice.service.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -40,5 +41,10 @@ public class UserController {
     @GetMapping("/me")
     public ResponseEntity<UserInfoOutDto> getCurrentUserInfo() {
         return ResponseEntity.ok(userService.getCurrentUserInfoOutDto());
+    }
+
+    @GetMapping("/activity-rating")
+    public ResponseEntity<UserRatingListOutDto> getUserActivityRating() {
+        return ResponseEntity.ok(userService.getUserActivityRating());
     }
 }

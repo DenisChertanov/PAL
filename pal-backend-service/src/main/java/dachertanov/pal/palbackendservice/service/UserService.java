@@ -3,6 +3,8 @@ package dachertanov.pal.palbackendservice.service;
 import dachertanov.pal.palbackenddto.user.UserInfoOutDto;
 import dachertanov.pal.palbackenddto.user.UserSearchInDto;
 import dachertanov.pal.palbackenddto.user.UserSearchOutDto;
+import dachertanov.pal.palbackenddto.user.rating.UserRating;
+import dachertanov.pal.palbackenddto.user.rating.UserRatingListOutDto;
 import dachertanov.pal.palbackendservice.entity.AnimePlaylist;
 import dachertanov.pal.palbackendservice.entity.UserInfo;
 import dachertanov.pal.palbackendservice.mapper.UserInfoMapper;
@@ -19,6 +21,8 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -53,6 +57,32 @@ public class UserService {
     @Transactional
     public UserInfoOutDto getCurrentUserInfoOutDto() {
         return userInfoMapper.entityToOutDto(getCurrentUserInfo());
+    }
+
+    @Transactional
+    public UserRatingListOutDto getUserActivityRating() {
+        LocalDateTime currentDateTime = LocalDateTime.now();
+        LocalDateTime currentMonthFirstDay = LocalDateTime.of(
+                currentDateTime.getYear(),
+                currentDateTime.getMonth(),
+                1,
+                0,
+                0,
+                0
+        );
+        List<UserRating> allUserRating = userInfoRepository.getUserRating(currentMonthFirstDay, currentDateTime);
+
+        UserRatingListOutDto result = new UserRatingListOutDto(
+                allUserRating.subList(0, Math.min(20, allUserRating.size())),
+                String.format("%02d.%d", currentDateTime.getMonthValue(), currentDateTime.getYear())
+        );
+        long order = 1;
+        for (var userRating : result.getUserRatingList()) {
+            userRating.setOrder(order);
+            order++;
+        }
+
+        return result;
     }
 
     private UserInfo getCurrentUserInfo() {

@@ -112,7 +112,10 @@ public class SearchAnimeService {
             userId = SecurityUtil.getCurrentUserId();
 
             List<UUID> allWatchedAnimeIds = userAnimeActivityRepository.findAllWatchedAnime(userId);
-            result = animeRepository.notWatchedAnimeInIds(animeList, allWatchedAnimeIds);
+
+            if (!allWatchedAnimeIds.isEmpty()) {
+                result = animeRepository.notWatchedAnimeInIds(animeList, allWatchedAnimeIds);
+            }
         } catch (Exception e) {
             log.error(e.getMessage(), e);
         }

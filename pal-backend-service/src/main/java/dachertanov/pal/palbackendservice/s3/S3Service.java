@@ -22,7 +22,10 @@ public class S3Service {
      */
     public String uploadImage(MultipartFile file, String imageKey) throws Exception {
         String filePath = getFile(file);
-        String filePathInBucket = "images" + File.separator + imageKey + File.separator + file.getOriginalFilename();
+        String filePathInBucket = s3Properties.getPublicFolder() + File.separator +
+                "images" + File.separator +
+                imageKey + File.separator +
+                file.getOriginalFilename();
 
         minioClient.uploadObject(
                 UploadObjectArgs.builder()
@@ -31,15 +34,9 @@ public class S3Service {
                         .filename(filePath)
                         .build());
 
-//        String url = minioClient.getPresignedObjectUrl(
-//                GetPresignedObjectUrlArgs.builder()
-//                        .method(Method.GET)
-//                        .bucket(s3Properties.getBucket())
-//                        .object(filePathInBucket)
-//                        .build());
-
-        String publicUrl = s3Properties.getUrl() + File.separator +
+        String publicUrl = s3Properties.getObjectUrl() + File.separator +
                 s3Properties.getBucket() + File.separator +
+                s3Properties.getPublicFolder() + File.separator +
                 "images" + File.separator +
                 imageKey + File.separator +
                 file.getOriginalFilename();

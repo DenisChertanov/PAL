@@ -11,6 +11,7 @@ import dachertanov.pal.palbackendservice.security.config.JwtUtils;
 import dachertanov.pal.palbackendservice.service.UserStatisticService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.Pbkdf2PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -23,7 +24,6 @@ import java.util.UUID;
 
 @Slf4j
 @Service
-@AllArgsConstructor
 public class AuthService {
     private final UserInfoRepository userInfoRepository;
     private final Pbkdf2PasswordEncoder passwordEncoder;
@@ -31,6 +31,23 @@ public class AuthService {
     private final UserInfoMapper userInfoMapper;
     private final UserStatisticRepository userStatisticRepository;
     private final UserStatisticService userStatisticService;
+    private final UUID adminId;
+
+    public AuthService(UserInfoRepository userInfoRepository,
+                       Pbkdf2PasswordEncoder passwordEncoder,
+                       JwtUtils jwtUtils,
+                       UserInfoMapper userInfoMapper,
+                       UserStatisticRepository userStatisticRepository,
+                       UserStatisticService userStatisticService,
+                       @Value("${pal.security.admin-id}") UUID adminId) {
+        this.userInfoRepository = userInfoRepository;
+        this.passwordEncoder = passwordEncoder;
+        this.jwtUtils = jwtUtils;
+        this.userInfoMapper = userInfoMapper;
+        this.userStatisticRepository = userStatisticRepository;
+        this.userStatisticService = userStatisticService;
+        this.adminId = adminId;
+    }
 
     /**
      * Возвращает jwt токен по переданным Basic Auth
@@ -62,6 +79,21 @@ public class AuthService {
         validateUniqueUsername(userInfoInDto.getUsername());
 
         UserInfo userInfo = userInfoMapper.inDtoToEntity(userInfoInDto);
+        userInfo.setUserId(UUID.randomUUID());
+        userInfo = userInfoRepository.save(userInfo);
+        userStatisticRepository.save(new UserStatistic(userInfo.getUserId()));
+
+        userStatisticService.initFavouriteGenres(userInfo.getUserId());
+        userStatisticService.initAnimeRecommendation(userInfo.getUserId());
+
+        return userInfoMapper.entityToOutDto(userInfo);
+    }
+
+    public UserInfoOutDto signUpAdmin(UserInfoInDto userInfoInDto) {
+        validateUniqueUsername(userInfoInDto.getUsername());
+
+        UserInfo userInfo = userInfoMapper.inDtoToEntity(userInfoInDto);
+        userInfo.setUserId(adminId);
         userInfo = userInfoRepository.save(userInfo);
         userStatisticRepository.save(new UserStatistic(userInfo.getUserId()));
 

@@ -3,14 +3,20 @@ version: '3.1'
 services:
   pal-backend-service:
     image: dachertanov/pal-backend-service:latest
+    restart: unless-stopped
     links:
       - kafka
       - db
+      - minio
+      - minio-client
     environment:
       SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/postgres
       SPRING_DATASOURCE_USERNAME: postgres
       SPRING_DATASOURCE_PASSWORD: postgres
       SPRING_KAFKA_BOOTSTRAP-SERVERS: kafka:9092
+      MINIO_CONNECTION_URL: http://minio:9000
+      MINIO_ACCESS_KEY: minio_access_key
+      MINIO_SECRET_KEY: minio_secret_key
     ports:
       - 8081:8081
     depends_on:
@@ -19,8 +25,10 @@ services:
       - minio
     volumes:
       - /var/log/pal/logs/:/app/logs/
+
   pal-recommendation-service:
     image: dachertanov/pal-recommendation-service:latest
+    restart: unless-stopped
     links:
       - kafka
       - db
@@ -36,6 +44,12 @@ services:
       - kafka
     volumes:
       - /var/log/pal/logs/:/app/logs/
+
+  pal-frontend:
+    image: dachertanov/pal-frontend:latest
+    ports:
+      - 3001:3000
+
   db:
     image: postgres:latest
     environment:
@@ -45,7 +59,8 @@ services:
     ports:
       - 5432:5432
     volumes:
-      - /var/lib/postgresql/data
+      - ./data/postgres:/var/lib/postgresql/data
+
   minio:
     image: minio/minio:latest
     volumes:
@@ -60,6 +75,21 @@ services:
       MINIO_ROOT_PASSWORD: minio_password
     entrypoint: sh
     command: -c 'mkdir -p /data/images-bucket && minio server /data --console-address ":9001"'
+
+  minio-client:
+    image: minio/mc
+    depends_on:
+      - minio
+    entrypoint: >
+      /bin/sh -c "
+      sleep 10;
+      /usr/bin/mc config host add minio http://minio:9000 minio_user minio_password;
+      /usr/bin/mc policy set download minio/images-bucket/public;
+      /usr/bin/mc admin user add minio minio_access_key minio_secret_key;
+      /usr/bin/mc admin policy set minio readwrite user=minio_access_key;
+      exit 0;
+      "
+
   zookeeper:
     image: wurstmeister/zookeeper:latest
     hostname: zookeeper
@@ -67,6 +97,7 @@ services:
       - 2181:2181
     environment:
       - ALLOW_ANONYMOUS_LOGIN=yes
+
   kafka:
     image: wurstmeister/kafka:latest
     hostname: kafka

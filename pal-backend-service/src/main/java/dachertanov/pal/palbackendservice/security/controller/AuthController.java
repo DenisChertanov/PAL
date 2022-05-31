@@ -24,4 +24,9 @@ public class AuthController {
     public ResponseEntity<UserInfoOutDto> signUp(@Valid @RequestBody UserInfoInDto userInfoInDto) {
         return ResponseEntity.ok(authService.signUp(userInfoInDto));
     }
+
+    @PostMapping("/signup-admin")
+    public ResponseEntity<UserInfoOutDto> signUpAdmin(@Valid @RequestBody UserInfoInDto userInfoInDto) {
+        return ResponseEntity.ok(authService.signUpAdmin(userInfoInDto));
+    }
 }

@@ -26,8 +26,10 @@ server:
   port: 8081
 
 s3:
-  url: http://localhost:9000
-  bucket: images-bucket
+  connection-url: ${MINIO_CONNECTION_URL:http://localhost:9000}
+  object-url: ${MINIO_OBJECT_URL:http://localhost:9000}
+  bucket: ${S3_BUCKET:images-bucket}
+  public-folder: ${S3_PUBLIC_FOLDER:public}
   access-key: ${MINIO_ACCESS_KEY:minio_access_key}
   secret-key: ${MINIO_SECRET_KEY:minio_secret_key}
 

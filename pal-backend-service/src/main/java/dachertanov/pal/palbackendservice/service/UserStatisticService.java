@@ -90,6 +90,9 @@ public class UserStatisticService {
     public List<UserAnimeTimeDistributionOutDto> getUserAnimeTimeDistribution(UUID userId) {
         LocalDateTime nextStartMonth = LocalDateTime.now()
                 .minusDays(LocalDateTime.now().getDayOfMonth() - 1)
+                .withHour(0)
+                .withMinute(0)
+                .withSecond(0)
                 .plusMonths(1);
 
         List<UserAnimeTimeDistributionOutDto> result = new ArrayList<>();

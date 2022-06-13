@@ -13,5 +13,6 @@
   "Season": "Лето 2015",
   "AgeRating": "PG-13",
   "EpisodeDuration": "24 мин. ~ серия",
-  "Voice": "AniDUB, AniLibria, SHIZA Project, AniMedia, AnimeVost"
+  "Voice": "AniDUB, AniLibria, SHIZA Project, AniMedia, AnimeVost",
+  "StringId": "charlotte"
 }

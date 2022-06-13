@@ -40,6 +40,17 @@ public class AnimeService {
         }
     }
 
+    @Transactional
+    public Optional<AnimeOutDto> getAnimeByStringId(String stringId) {
+        Optional<Anime> opAnime = animeRepository.findByStringIdEquals(stringId);
+
+        if (opAnime.isPresent()) {
+            return opAnime.map(animeMapper::entityToOut);
+        } else {
+            throw new HttpClientErrorException(HttpStatus.BAD_REQUEST, "Аниме с stringId \"" + stringId + "\" не найдено");
+        }
+    }
+
     public Optional<AnimePageOutDto> getAnimeListByPage(AnimePageInDto animePageInDto) {
         Page<Anime> animeList = animeRepository.findAll(PageRequest.of(animePageInDto.getPageNumber(), animePageInDto.getPageSize()));
 

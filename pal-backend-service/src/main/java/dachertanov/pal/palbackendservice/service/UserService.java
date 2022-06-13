@@ -39,6 +39,12 @@ public class UserService {
                 .map(userInfoMapper::entityToOutDto);
     }
 
+    @Transactional
+    public Optional<UserInfoOutDto> getUserByUsername(String username) {
+        return userInfoRepository.findByUsernameEquals(username)
+                .map(userInfoMapper::entityToOutDto);
+    }
+
     public Page<UserSearchOutDto> findUsers(UserSearchInDto userSearchInDto) {
         return userInfoRepository.findUsers(userSearchInDto.getUserPrefix() + "%",
                 PageRequest.of(userSearchInDto.getPage().getPageNumber(), userSearchInDto.getPage().getPageSize()));

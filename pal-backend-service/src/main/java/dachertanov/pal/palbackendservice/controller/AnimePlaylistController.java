@@ -88,7 +88,7 @@ public class AnimePlaylistController {
 
     @PostMapping(value = "/all-by-user", consumes = {MediaType.APPLICATION_FORM_URLENCODED_VALUE})
     public List<AnimePlaylistOutDto> allByUser(@RequestParam MultiValueMap<String, String> paramMap) {
-        return animePlaylistService.getAllUserPlaylists(UUID.fromString(paramMap.getFirst("userId")));
+        return animePlaylistService.getAllUserPlaylists(paramMap.getFirst("username"));
     }
 
     @GetMapping(value = "/all-my")

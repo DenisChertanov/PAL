@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.NotNull;
 import java.util.UUID;
 
 @Data
@@ -19,4 +20,5 @@ public class AnimeRatingItemDto {
     private String state;
     private Integer year;
     private Integer order;
+    private String stringId;
 }

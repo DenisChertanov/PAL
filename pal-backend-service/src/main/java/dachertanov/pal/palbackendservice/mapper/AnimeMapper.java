@@ -31,6 +31,7 @@ public class AnimeMapper {
         anime.setAgeRating(animeInDto.getAgeRating());
         anime.setEpisodeDuration(animeInDto.getEpisodeDuration());
         anime.setVoice(animeInDto.getVoice());
+        anime.setStringId(animeInDto.getStringId());
 
         return anime;
     }
@@ -55,6 +56,7 @@ public class AnimeMapper {
         animeOutDto.setAgeRating(anime.getAgeRating());
         animeOutDto.setEpisodeDuration(anime.getEpisodeDuration());
         animeOutDto.setVoice(anime.getVoice());
+        animeOutDto.setStringId(anime.getStringId());
 
         return animeOutDto;
     }
@@ -69,6 +71,7 @@ public class AnimeMapper {
         animeRatingItemDto.setEpisodes(anime.getEpisodes());
         animeRatingItemDto.setState(anime.getAnimeState().getState());
         animeRatingItemDto.setYear(anime.getYear());
+        animeRatingItemDto.setStringId(anime.getStringId());
 
         return animeRatingItemDto;
     }

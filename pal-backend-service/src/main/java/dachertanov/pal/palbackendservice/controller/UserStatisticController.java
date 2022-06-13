@@ -24,30 +24,30 @@ public class UserStatisticController {
 
     private final UserStatisticService userStatisticService;
 
-    @GetMapping("/get-by-id/{userId}")
-    public ResponseEntity<UserStatisticOutDto> getUserStatisticById(@PathVariable UUID userId) {
-        return userStatisticService.getUserStatistic(userId)
+    @GetMapping("/get-by-id/{username}")
+    public ResponseEntity<UserStatisticOutDto> getUserStatisticById(@PathVariable String username) {
+        return userStatisticService.getUserStatistic(username)
                 .map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    @GetMapping("/last-watched-anime/{userId}")
-    public List<AnimeOutDto> getLastWatchedAnime(@PathVariable UUID userId) {
-        return userStatisticService.getLastWatchedAnime(userId, NUMBER_OF_LAST_WATCHED_ANIME);
+    @GetMapping("/last-watched-anime/{username}")
+    public List<AnimeOutDto> getLastWatchedAnime(@PathVariable String username) {
+        return userStatisticService.getLastWatchedAnime(username, NUMBER_OF_LAST_WATCHED_ANIME);
     }
 
-    @GetMapping("/favourite-genres/{userId}")
-    public List<UserFavouriteGenresOutDto> getUserFavouriteGenres(@PathVariable UUID userId) {
-        return userStatisticService.getUserFavouriteGenres(userId);
+    @GetMapping("/favourite-genres/{username}")
+    public List<UserFavouriteGenresOutDto> getUserFavouriteGenres(@PathVariable String username) {
+        return userStatisticService.getUserFavouriteGenres(username);
     }
 
-    @GetMapping("/anime-type-distribution/{userId}")
-    public List<AnimeTypeDistributionOutDto> getUserAnimeTypeDistribution(@PathVariable UUID userId) {
-        return userStatisticService.getUserAnimeTypeDistribution(userId);
+    @GetMapping("/anime-type-distribution/{username}")
+    public List<AnimeTypeDistributionOutDto> getUserAnimeTypeDistribution(@PathVariable String username) {
+        return userStatisticService.getUserAnimeTypeDistribution(username);
     }
 
-    @GetMapping("/anime-time-distribution/{userId}")
-    public List<UserAnimeTimeDistributionOutDto> getUserAnimeTimeDistribution(@PathVariable UUID userId) {
-        return userStatisticService.getUserAnimeTimeDistribution(userId);
+    @GetMapping("/anime-time-distribution/{username}")
+    public List<UserAnimeTimeDistributionOutDto> getUserAnimeTimeDistribution(@PathVariable String username) {
+        return userStatisticService.getUserAnimeTimeDistribution(username);
     }
 }

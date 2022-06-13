@@ -63,6 +63,9 @@ public class Anime {
     private String voice;
 
     @NotNull
+    private String stringId;
+
+    @NotNull
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "anime_state_id", referencedColumnName = "anime_state_id")
     private AnimeState animeState;

@@ -21,9 +21,9 @@ import java.util.UUID;
 public class UserController {
     private final UserService userService;
 
-    @GetMapping("/get-by-id/{userId}")
-    public ResponseEntity<UserInfoOutDto> getUserById(@PathVariable UUID userId) {
-        return userService.getUserById(userId)
+    @GetMapping("/get-by-id/{username}")
+    public ResponseEntity<UserInfoOutDto> getUserById(@PathVariable String username) {
+        return userService.getUserByUsername(username)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }

@@ -32,4 +32,6 @@ public class UserAnimeActivityOutDto {
     @NotNull
     @Min(0)
     private Integer lastWatchedEpisode = 0;
+
+    private String stringId;
 }

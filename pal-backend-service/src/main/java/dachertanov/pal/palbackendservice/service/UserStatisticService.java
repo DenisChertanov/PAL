@@ -5,10 +5,7 @@ import dachertanov.pal.palbackenddto.user.AnimeTypeDistributionOutDto;
 import dachertanov.pal.palbackenddto.user.UserAnimeTimeDistributionOutDto;
 import dachertanov.pal.palbackenddto.user.UserFavouriteGenresOutDto;
 import dachertanov.pal.palbackenddto.user.UserStatisticOutDto;
-import dachertanov.pal.palbackendservice.entity.Anime;
-import dachertanov.pal.palbackendservice.entity.AnimeTag;
-import dachertanov.pal.palbackendservice.entity.UserAnimeRecommendation;
-import dachertanov.pal.palbackendservice.entity.UserFavouriteGenres;
+import dachertanov.pal.palbackendservice.entity.*;
 import dachertanov.pal.palbackendservice.mapper.AnimeMapper;
 import dachertanov.pal.palbackendservice.mapper.UserStatisticMapper;
 import dachertanov.pal.palbackendservice.repository.*;
@@ -16,8 +13,10 @@ import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.client.HttpClientErrorException;
 
 import java.time.LocalDateTime;
 import java.util.*;
@@ -40,14 +39,27 @@ public class UserStatisticService {
     private final UserFavouriteGenresRepository userFavouriteGenresRepository;
     private final AnimeTagRepository animeTagRepository;
     private final UserAnimeRecommendationRepository userAnimeRecommendationRepository;
+    private final UserInfoRepository userInfoRepository;
 
-    public Optional<UserStatisticOutDto> getUserStatistic(UUID userId) {
+    public Optional<UserStatisticOutDto> getUserStatistic(String username) {
+        Optional<UserInfo> opUserInfo = userInfoRepository.findByUsernameEquals(username);
+        UUID userId = opUserInfo
+                .orElseThrow(() -> new HttpClientErrorException(HttpStatus.BAD_REQUEST,
+                        String.format("User with username = [%s] not found", username)))
+                .getUserId();
+
         return userStatisticRepository.findById(userId)
                 .map(userStatisticMapper::entityToOutDto);
     }
 
     @Transactional
-    public List<AnimeOutDto> getLastWatchedAnime(UUID userId, int animeCount) {
+    public List<AnimeOutDto> getLastWatchedAnime(String username, int animeCount) {
+        Optional<UserInfo> opUserInfo = userInfoRepository.findByUsernameEquals(username);
+        UUID userId = opUserInfo
+                .orElseThrow(() -> new HttpClientErrorException(HttpStatus.BAD_REQUEST,
+                        String.format("User with username = [%s] not found", username)))
+                .getUserId();
+
         Page<UUID> animeIds = userAnimeActivityRepository.findAllTopByUserIdEquals(userId,
                 PageRequest.of(0, animeCount, Sort.by(Sort.Direction.DESC, "dateTimeWatched")));
         Page<Anime> lastWatchedAnime = animeRepository.findAllByAnimeIdIn(animeIds.getContent(),
@@ -59,7 +71,13 @@ public class UserStatisticService {
     }
 
     @Transactional
-    public List<UserFavouriteGenresOutDto> getUserFavouriteGenres(UUID userId) {
+    public List<UserFavouriteGenresOutDto> getUserFavouriteGenres(String username) {
+        Optional<UserInfo> opUserInfo = userInfoRepository.findByUsernameEquals(username);
+        UUID userId = opUserInfo
+                .orElseThrow(() -> new HttpClientErrorException(HttpStatus.BAD_REQUEST,
+                        String.format("User with username = [%s] not found", username)))
+                .getUserId();
+
         List<UserFavouriteGenres> userFavouriteGenres = userFavouriteGenresRepository
                 .findAllByUserIdEqualsOrderByRecommendationMarkDesc(userId);
         Map<UUID, AnimeTag> animeTagsMap = animeTagRepository.findAll()
@@ -81,13 +99,25 @@ public class UserStatisticService {
     }
 
     @Transactional
-    public List<AnimeTypeDistributionOutDto> getUserAnimeTypeDistribution(UUID userId) {
+    public List<AnimeTypeDistributionOutDto> getUserAnimeTypeDistribution(String username) {
+        Optional<UserInfo> opUserInfo = userInfoRepository.findByUsernameEquals(username);
+        UUID userId = opUserInfo
+                .orElseThrow(() -> new HttpClientErrorException(HttpStatus.BAD_REQUEST,
+                        String.format("User with username = [%s] not found", username)))
+                .getUserId();
+
         List<UUID> allWatchedAnimeIds = userAnimeActivityRepository.findAllWatchedAnime(userId);
         return animeRepository.getUserAnimeTypeDistribution(allWatchedAnimeIds);
     }
 
     @Transactional
-    public List<UserAnimeTimeDistributionOutDto> getUserAnimeTimeDistribution(UUID userId) {
+    public List<UserAnimeTimeDistributionOutDto> getUserAnimeTimeDistribution(String username) {
+        Optional<UserInfo> opUserInfo = userInfoRepository.findByUsernameEquals(username);
+        UUID userId = opUserInfo
+                .orElseThrow(() -> new HttpClientErrorException(HttpStatus.BAD_REQUEST,
+                        String.format("User with username = [%s] not found", username)))
+                .getUserId();
+
         LocalDateTime nextStartMonth = LocalDateTime.now()
                 .minusDays(LocalDateTime.now().getDayOfMonth() - 1)
                 .withHour(0)

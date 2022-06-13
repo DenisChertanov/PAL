@@ -18,9 +18,9 @@ import java.util.UUID;
 public class AnimeController {
     private final AnimeService animeService;
 
-    @GetMapping("/get-by-id/{animeId}")
-    public ResponseEntity<AnimeOutDto> getAnimeById(@PathVariable UUID animeId) {
-        return animeService.getAnimeById(animeId)
+    @GetMapping("/get-by-id/{stringId}")
+    public ResponseEntity<AnimeOutDto> getAnimeByStringId(@PathVariable String stringId) {
+        return animeService.getAnimeByStringId(stringId)
                 .map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }

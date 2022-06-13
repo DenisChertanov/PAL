@@ -177,7 +177,13 @@ public class AnimePlaylistService {
     }
 
     @Transactional
-    public List<AnimePlaylistOutDto> getAllUserPlaylists(UUID userId) {
+    public List<AnimePlaylistOutDto> getAllUserPlaylists(String username) {
+        Optional<UserInfo> opUserInfo = userInfoRepository.findByUsernameEquals(username);
+        UUID userId = opUserInfo
+                .orElseThrow(() -> new HttpClientErrorException(HttpStatus.BAD_REQUEST,
+                        String.format("User with username = [%s] not found", username)))
+                .getUserId();
+
         List<AnimePlaylist> userPlaylists = animePlaylistRepository.findAllByUserId(userId);
 
         return userPlaylists.stream()
@@ -186,7 +192,7 @@ public class AnimePlaylistService {
     }
 
     public List<AnimePlaylistOutDto> getAllCurrentUserPlaylists() {
-        return getAllUserPlaylists(getCurrentUserInfo().getUserId());
+        return getAllUserPlaylists(getCurrentUserInfo().getUsername());
     }
 
     private AnimePlaylistOutDto makeDtoByAnimePlaylistId(UUID animePlaylistId) {

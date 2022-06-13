@@ -84,4 +84,7 @@ public class AnimeOutDto {
     @Schema(description = "Озвучка", example = "AniDUB, AniLibria")
     @NotNull
     private String voice;
+
+    @NotNull
+    private String stringId;
 }

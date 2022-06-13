@@ -8,9 +8,12 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 public interface AnimeRepository extends JpaRepository<Anime, UUID> {
+    Optional<Anime> findByStringIdEquals(String stringId);
+
     /**
      * Возвращает список аниме, которые подходят по типу, статусу, году
      */
